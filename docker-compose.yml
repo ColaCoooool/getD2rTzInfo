@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  d2r-tz-tracker:
+    build: .
+    container_name: d2r-tz-tracker
+    ports:
+      - "15554:15554"
+    restart: unless-stopped
+    environment:
+      - TZ=Asia/Shanghai
+    networks:
+      - d2r-network
+
+networks:
+  d2r-network:
+    driver: bridge

@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>暗黑破坏神2 - 恐怖地带追踪</title>
+    <style>
+        /* 全局样式 */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #f8f9fa;
+            --accent-color: #6c757d;
+            --text-color: #343a40;
+            --background-color: #ffffff;
+            --card-background: #f8f9fa;
+            --border-color: #dee2e6;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            min-height: 100vh;
+        }
+        
+        /* 容器 */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* 标题 */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 30px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px var(--shadow-color);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: white;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        /* 卡片容器 */
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        /* 卡片样式 */
+        .card {
+            background-color: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 8px var(--shadow-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px var(--shadow-color);
+        }
+        
+        .card h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .time-info {
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            padding: 8px;
+            background-color: var(--secondary-color);
+            border-radius: 6px;
+            font-weight: 500;
+        }
+        
+        /* 信息项 */
+        .info-item {
+            margin-bottom: 18px;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: var(--accent-color);
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .info-value {
+            font-size: 1.1rem;
+            color: var(--text-color);
+            background-color: white;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+            box-shadow: 0 1px 3px var(--shadow-color);
+        }
+        
+        /* 免疫信息 */
+        .immunities {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        
+        .immunity-tag {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        /* 加载状态 */
+        .loading {
+            text-align: center;
+            padding: 30px;
+            font-size: 1.2rem;
+            color: var(--accent-color);
+        }
+        
+        /* 错误状态 */
+        .error {
+            text-align: center;
+            padding: 30px;
+            font-size: 1.2rem;
+            color: #dc3545;
+        }
+        
+        /* 刷新按钮 */
+        .refresh-button {
+            display: block;
+            margin: 30px auto;
+            padding: 12px 30px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px var(--shadow-color);
+        }
+        
+        .refresh-button:hover {
+            background-color: #3a5a80;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
+        
+        /* 导航链接 */
+        .navigation {
+            background-color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px var(--shadow-color);
+        }
+        
+        .nav-title {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .nav-link {
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            border: 1px solid var(--primary-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px var(--shadow-color);
+        }
+        
+        /* 历史记录区域 */
+        .history-section {
+            margin-top: 40px;
+            background-color: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 8px var(--shadow-color);
+        }
+        
+        .history-section h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+        
+        .history-container {
+            max-height: 400px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        
+        .history-item {
+            background-color: var(--secondary-color);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--primary-color);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .history-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 4px var(--shadow-color);
+            overflow: hidden;
+        }
+        
+        .history-time {
+            font-size: 0.9rem;
+            color: var(--accent-color);
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .history-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 3px;
+        }
+        
+        .history-location {
+            font-size: 0.9rem;
+            color: var(--accent-color);
+            margin-bottom: 5px;
+        }
+        
+        .history-immunities {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 5px;
+        }
+        
+        .history-immunity-tag {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .history-empty {
+            text-align: center;
+            padding: 40px;
+            color: var(--accent-color);
+            font-style: italic;
+        }
+        
+        /* 页脚 */
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            background-color: white;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.9rem;
+            color: var(--accent-color);
+            border-radius: 8px;
+            box-shadow: 0 -2px 4px var(--shadow-color);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            header {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .cards-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+            
+            .info-item {
+                margin-bottom: 15px;
+            }
+            
+            .info-value {
+                padding: 10px;
+            }
+            
+            .refresh-button {
+                padding: 10px 25px;
+                font-size: 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .card {
+                padding: 18px;
+            }
+            
+            .info-label {
+                font-size: 0.9rem;
+            }
+            
+            .info-value {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>恐怖地带追踪器</h1>
+        </header>
+        
+        <!-- 导航链接 -->
+        <nav class="navigation">
+            <div class="nav-title">相关工具</div>
+            <div class="nav-links" id="nav-links">
+                <div class="loading">加载中...</div>
+            </div>
+        </nav>
+        
+        <div class="cards-container">
+            <!-- 当前恐怖地带卡片 -->
+            <div class="card">
+                <h2>当前恐怖地带</h2>
+                <div class="time-info" id="current-time">加载中...</div>
+                <div class="info-item">
+                    <span class="info-label">场景名称</span>
+                    <div class="info-value" id="current-name">加载中...</div>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">位置</span>
+                    <div class="info-value" id="current-location">加载中...</div>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">属性免疫</span>
+                    <div class="info-value">
+                        <div class="immunities" id="current-immunities">加载中...</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 下场恐怖地带卡片 -->
+            <div class="card">
+                <h2>下场恐怖地带</h2>
+                <div class="time-info" id="next-time">加载中...</div>
+                <div class="info-item">
+                    <span class="info-label">场景名称</span>
+                    <div class="info-value" id="next-name">加载中...</div>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">位置</span>
+                    <div class="info-value" id="next-location">加载中...</div>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">属性免疫</span>
+                    <div class="info-value">
+                        <div class="immunities" id="next-immunities">加载中...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <button class="refresh-button" onclick="fetchTerrorZones()">
+            刷新数据
+        </button>
+        
+        <!-- 历史记录区域 -->
+        <section class="history-section">
+            <h2>最近24小时刷新记录</h2>
+            <div class="history-container" id="history-container">
+                <div class="loading">加载中...</div>
+            </div>
+        </section>
+        
+        <footer>
+            <p>恐怖地带追踪器 &copy; 2026</p>
+        </footer>
+    </div>
+    
+    <script>
+        // 页面加载时获取数据
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchTerrorZones();
+            fetchNavigationLinks();
+            fetchTzHistory();
+        });
+        
+        // 获取恐怖地带历史记录
+        function fetchTzHistory() {
+            fetch('/api/tz-history')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    updateTzHistory(data);
+                })
+                .catch(error => {
+                    console.error('Error loading history:', error);
+                    document.getElementById('history-container').innerHTML = '<div class="error">无法加载历史记录</div>';
+                });
+        }
+        
+        // 更新历史记录显示
+        function updateTzHistory(data) {
+            const historyContainer = document.getElementById('history-container');
+            
+            if (!data || !data.records || data.records.length === 0) {
+                historyContainer.innerHTML = '<div class="history-empty">暂无历史记录</div>';
+                return;
+            }
+            
+            let html = '';
+            data.records.forEach(record => {
+                // 格式化时间为时间段格式 (2026/03/06 15:00-15:30)
+                const timeStr = record.time || '';
+                const match = timeStr.match(/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/);
+                let timeRange = timeStr;
+                if (match) {
+                    const year = match[1];
+                    const month = match[2];
+                    const day = match[3];
+                    const hours = match[4];
+                    const minutes = parseInt(match[5]);
+                    let endHours = hours;
+                    let endMinutes = minutes + 30;
+                    if (endMinutes >= 60) {
+                        endMinutes = endMinutes - 60;
+                        endHours = (parseInt(hours) + 1).toString().padStart(2, '0');
+                    }
+                    timeRange = `${year}/${month}/${day} ${hours}:${match[5]}-${endHours}:${endMinutes.toString().padStart(2, '0')}`;
+                }
+                
+                html += `
+                    <div class="history-item">
+                        <div class="history-time">${timeRange}</div>
+                        <div class="history-name">${record.name.replace('</br>', ' / ')}</div>
+                        <div class="history-location">${record.location}</div>
+                        <div class="history-immunities">
+                            ${record.immunities.map(immunity => 
+                                `<span class="history-immunity-tag">${immunity}</span>`
+                            ).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            historyContainer.innerHTML = html;
+        }
+        
+        // 获取导航链接
+        function fetchNavigationLinks() {
+            fetch('navigation.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    updateNavigationLinks(data);
+                })
+                .catch(error => {
+                    console.error('Error loading navigation links:', error);
+                    document.getElementById('nav-links').innerHTML = '<div class="error">无法加载导航链接</div>';
+                });
+        }
+        
+        // 更新导航链接
+        function updateNavigationLinks(links) {
+            const navLinksContainer = document.getElementById('nav-links');
+            
+            if (!links || links.length === 0) {
+                navLinksContainer.innerHTML = '<div class="error">暂无导航链接</div>';
+                return;
+            }
+            
+            let html = '';
+            links.forEach(link => {
+                html += `<a href="${link.address}" class="nav-link" target="_blank">${link.name}</a>`;
+            });
+            
+            navLinksContainer.innerHTML = html;
+        }
+        
+        // 获取恐怖地带数据
+        function fetchTerrorZones() {
+            // 显示加载状态
+            updateLoadingState();
+            
+            // 调用后端API获取数据
+            fetch('/api/terror-zones')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    updateTerrorZoneInfo(data);
+                    // 更新历史记录
+                    fetchTzHistory();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    updateErrorState();
+                });
+        }
+        
+        // 更新加载状态
+        function updateLoadingState() {
+            document.getElementById('current-name').textContent = '加载中...';
+            document.getElementById('current-location').textContent = '加载中...';
+            document.getElementById('current-time').textContent = '加载中...';
+            document.getElementById('current-immunities').innerHTML = '加载中...';
+            document.getElementById('next-name').textContent = '加载中...';
+            document.getElementById('next-location').textContent = '加载中...';
+            document.getElementById('next-time').textContent = '加载中...';
+            document.getElementById('next-immunities').innerHTML = '加载中...';
+        }
+        
+        // 更新错误状态
+        function updateErrorState() {
+            document.getElementById('current-name').textContent = '获取失败';
+            document.getElementById('current-location').textContent = '获取失败';
+            document.getElementById('current-time').textContent = '获取失败';
+            document.getElementById('current-immunities').innerHTML = '获取失败';
+            document.getElementById('next-name').textContent = '获取失败';
+            document.getElementById('next-location').textContent = '获取失败';
+            document.getElementById('next-time').textContent = '获取失败';
+            document.getElementById('next-immunities').innerHTML = '获取失败';
+        }
+        
+        // 更新恐怖地带信息
+        function updateTerrorZoneInfo(data) {
+            // 更新当前恐怖地带
+            if (data.current) {
+                document.getElementById('current-name').innerHTML = data.current.name.replace('</br>', '<br>');
+                document.getElementById('current-location').textContent = data.current.location;
+                document.getElementById('current-time').textContent = data.current.time || '未知';
+                document.getElementById('current-immunities').innerHTML = renderImmunities(data.current.immunities);
+            }
+            
+            // 更新下场恐怖地带
+            if (data.next) {
+                document.getElementById('next-name').innerHTML = data.next.name.replace('</br>', '<br>');
+                document.getElementById('next-location').textContent = data.next.location;
+                document.getElementById('next-time').textContent = data.next.time || '未知';
+                document.getElementById('next-immunities').innerHTML = renderImmunities(data.next.immunities);
+            }
+        }
+        
+        // 渲染免疫信息
+        function renderImmunities(immunities) {
+            if (!immunities || immunities.length === 0) {
+                return '<span class="immunity-tag">无免疫</span>';
+            }
+            
+            return immunities.map(immunity => 
+                `<span class="immunity-tag">${immunity}</span>`
+            ).join('');
+        }
+    </script>
+</body>
+</html>

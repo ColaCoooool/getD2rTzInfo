@@ -1,0 +1,40 @@
+{
+  "records": [
+    {
+      "timestamp": "2026-03-06T15:00:00",
+      "name": "干燥高地</br>亡者大殿",
+      "location": "Act 2",
+      "immunities": [
+        "Cold",
+        "Fire",
+        "Lightning",
+        "Poison"
+      ],
+      "time": "2026-03-06 15:00:00"
+    },
+    {
+      "timestamp": "2026-03-06T15:30:00",
+      "name": "鲜血荒地</br>邪恶洞穴",
+      "location": "Act 1",
+      "immunities": [
+        "Cold",
+        "Fire"
+      ],
+      "time": "2026-03-06 15:30:00"
+    },
+    {
+      "timestamp": "2026-03-06T16:03:30.856881",
+      "name": "亚瑞特高原</br>阿克隆深渊",
+      "location": "Act 5",
+      "immunities": [
+        "Cold",
+        "Fire",
+        "Lightning",
+        "Magic",
+        "Poison",
+        "Physical"
+      ],
+      "time": "2026-03-06 16:00:00"
+    }
+  ]
+}
