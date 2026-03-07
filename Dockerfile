@@ -8,10 +8,10 @@ WORKDIR /app
 COPY . .
 
 # 安装依赖项
-RUN pip install --no-cache-dir flask requests beautifulsoup4
+RUN pip install --no-cache-dir flask requests beautifulsoup4 schedule
 
 # 暴露端口
-EXPOSE 15555
+EXPOSE 15554
 
 # 启动应用
 CMD ["python", "app.py"]
