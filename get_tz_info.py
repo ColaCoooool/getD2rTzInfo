@@ -9,9 +9,9 @@ class D2TerrorZoneScraper:
         self.headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
         }
-        # 解密密钥，从网页JavaScript中提取
-        self.key1 = "ka02jnb1"
-        self.key2 = "kb32jnb1"
+        # 新的解密密钥，从网页JavaScript中提取
+        self.key1 = "kab2jnb1"
+        self.key2 = "kbd2jnb1"
     
     def decrypt(self, encrypted_data):
         """解密加密的数据"""
@@ -33,7 +33,13 @@ class D2TerrorZoneScraper:
                 result2.append(chr(ord(char) ^ ord(key_char)))
             result2_str = ''.join(result2)
             
-            return result2_str
+            # 第四步：Base64编码（与JavaScript的btoa对应）
+            encoded_result = base64.b64encode(result2_str.encode('utf-8')).decode('utf-8')
+            
+            # 第五步：再次Base64解码（与JavaScript的atob对应）
+            final_data = base64.b64decode(encoded_result).decode('utf-8', errors='ignore')
+            
+            return final_data
         except Exception as e:
             print(f"解密失败: {e}")
             return None
@@ -62,7 +68,8 @@ class D2TerrorZoneScraper:
         current_tz = {
             "name": "",
             "immunities": [],
-            "location": ""
+            "location": "",
+            "time": ""
         }
         
         # 查找当前恐怖地带的span元素
@@ -103,6 +110,25 @@ class D2TerrorZoneScraper:
             # 提取位置信息
             current_tz["location"] = self._extract_location(current_tz["name"])
         
+        # 提取时间信息
+        current_time_element = soup.find(id="current-time")
+        if current_time_element:
+            time_text = current_time_element.text.strip()
+            if time_text:
+                current_tz["time"] = time_text
+            else:
+                # 计算当前的30分钟间隔时间
+                import datetime
+                now = datetime.datetime.now()
+                if now.minute < 30:
+                    current_time = now.replace(minute=0, second=0)
+                else:
+                    current_time = now.replace(minute=30, second=0)
+                current_tz["time"] = current_time.strftime("%Y-%m-%d %H:%M:%S")
+        else:
+            import datetime
+            current_tz["time"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
         # 提取免疫信息
         current_tz["immunities"] = self._extract_immunities(soup)
         
@@ -113,7 +139,8 @@ class D2TerrorZoneScraper:
         next_tz = {
             "name": "",
             "immunities": [],
-            "location": ""
+            "location": "",
+            "time": ""
         }
         
         # 查找下场恐怖地带的span元素
@@ -154,6 +181,26 @@ class D2TerrorZoneScraper:
             # 提取位置信息
             next_tz["location"] = self._extract_location(next_tz["name"])
         
+        # 提取时间信息
+        next_time_element = soup.find(id="next-time")
+        if next_time_element:
+            time_value = next_time_element.get("value", "")
+            if time_value:
+                try:
+                    import datetime
+                    timestamp = int(time_value)
+                    next_tz["time"] = datetime.datetime.fromtimestamp(timestamp).strftime("%Y-%m-%d %H:%M:%S")
+                except Exception as e:
+                    print(f"时间戳转换失败: {e}")
+                    import datetime
+                    next_tz["time"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            else:
+                import datetime
+                next_tz["time"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        else:
+            import datetime
+            next_tz["time"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
         # 提取免疫信息
         next_tz["immunities"] = self._extract_immunities(soup)
         
@@ -167,9 +214,9 @@ class D2TerrorZoneScraper:
         tooltip_elements = soup.find_all(class_="tooltip-text")
         for tooltip in tooltip_elements:
             text = tooltip.text.strip()
-            if "immunities:" in text:
+            if "immunities:" in text.lower():
                 # 提取免疫信息
-                immunity_text = text.split("immunities:")[1].strip()
+                immunity_text = text.split(":")[1].strip() if ":" in text else ""
                 # 分割免疫属性
                 immunity_list = immunity_text.split(",")
                 for imm in immunity_list:
@@ -183,8 +230,8 @@ class D2TerrorZoneScraper:
     def _extract_location(self, zone_name):
         """提取场景的位置信息"""
         # 根据场景名称返回位置信息
-        # 这里可以根据实际需要扩展位置信息数据库
         location_map = {
+            # Act 1
             "Cold Plains": "Act 1",
             "Stony Field": "Act 1",
             "Darkwood": "Act 1",
@@ -197,6 +244,14 @@ class D2TerrorZoneScraper:
             "Forgotten Tower": "Act 1",
             "Jail": "Act 1",
             "Barracks": "Act 1",
+            "Pit": "Act 1",
+            "Mausoleum": "Act 1",
+            "Crypt": "Act 1",
+            "Blood Moor": "Act 1",
+            "Den of Evil": "Act 1",
+            "Burial Grounds": "Act 1",
+            
+            # Act 2
             "Far Oasis": "Act 2",
             "Lost City": "Act 2",
             "Ancient Tunnels": "Act 2",
@@ -209,6 +264,10 @@ class D2TerrorZoneScraper:
             "Claw Viper Temple": "Act 2",
             "Arcane Sanctuary": "Act 2",
             "Canyon of the Magi": "Act 2",
+            "Sewers": "Act 2",
+            "Palace Cellar": "Act 2",
+            
+            # Act 3
             "Travincal": "Act 3",
             "Kurast Bazaar": "Act 3",
             "Temples": "Act 3",
@@ -216,8 +275,10 @@ class D2TerrorZoneScraper:
             "Flayer Jungle": "Act 3",
             "Spider Forest": "Act 3",
             "Great Marsh": "Act 3",
-            "Pit of Acheron": "Act 3",
-            "Arreat Plateau": "Act 4",
+            "Swampy Pit": "Act 3",
+            "Kurast Causeway": "Act 3",
+            
+            # Act 4
             "Bloody Foothills": "Act 4",
             "Frigid Highlands": "Act 4",
             "Abaddon": "Act 4",
@@ -226,9 +287,9 @@ class D2TerrorZoneScraper:
             "City of the Damned": "Act 4",
             "River of Flame": "Act 4",
             "Chaos Sanctuary": "Act 4",
-            "Bloody Foothills": "Act 5",
-            "Frigid Highlands": "Act 5",
-            "Abaddon": "Act 5",
+            
+            # Act 5
+            "Arreat Plateau": "Act 5",
             "Crystalline Passage": "Act 5",
             "Frozen River": "Act 5",
             "Glacial Trail": "Act 5",
@@ -238,10 +299,33 @@ class D2TerrorZoneScraper:
             "Nihlathak's Temple": "Act 5",
             "Worldstone Keep": "Act 5",
             "Throne of Destruction": "Act 5",
-            "Worldstone Chamber": "Act 5"
+            "Worldstone Chamber": "Act 5",
+            "Halls of Vaught": "Act 5",
+            "Pit of Acheron": "Act 5",
+            
+            # 中文场景名称映射
+            "干燥高地": "Act 2",
+            "亡者大殿": "Act 2",
+            "外域荒原": "Act 4",
+            "绝望平原": "Act 4",
+            "先祖之路": "Act 5",
+            "寒冰地窖": "Act 5",
+            "鲜血荒地": "Act 1",
+            "邪恶洞穴": "Act 1",
+            "亚瑞特高原": "Act 5",
+            "阿克隆深渊": "Act 5"
         }
         
         # 查找场景名称中的主要部分
+        # 处理包含多个场景的情况（如"Blood Moor</br>Den of Evil"）
+        zone_parts = zone_name.split('</br>')
+        for part in zone_parts:
+            part = part.strip()
+            for key in location_map:
+                if key in part:
+                    return location_map[key]
+        
+        # 如果没有找到，再尝试整个名称
         for key in location_map:
             if key in zone_name:
                 return location_map[key]

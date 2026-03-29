@@ -1,16 +1,32 @@
 {
   "records": [
     {
-      "timestamp": "2026-03-07T16:39:11.064704",
-      "name": "庞大湿地",
+      "timestamp": "2026-03-29T12:13:35.520848",
+      "name": "",
+      "location": "",
+      "immunities": [
+        "Cold",
+        "Fire",
+        "Lightning",
+        "Magic",
+        "Poison",
+        "Physical"
+      ],
+      "time": "2026-03-29 12:00:00"
+    },
+    {
+      "timestamp": "2026-03-29T12:17:11.783795",
+      "name": "剥皮魔丛林</br>剥皮魔监牢</br>沼泽陷坑",
       "location": "Act 3",
       "immunities": [
         "Cold",
         "Fire",
         "Lightning",
-        "Poison"
+        "Magic",
+        "Poison",
+        "Physical"
       ],
-      "time": "2026-03-07 16:30:00"
+      "time": "2026-03-29 12:00:00"
     }
   ]
 }

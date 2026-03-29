@@ -19,9 +19,9 @@ class D2TerrorZoneScraper:
         self.headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
         }
-        # 解密密钥，从网页JavaScript中提取
-        self.key1 = "ka02jnb1"
-        self.key2 = "kb32jnb1"
+        # 新的解密密钥，从网页JavaScript中提取
+        self.key1 = "kab2jnb1"
+        self.key2 = "kbd2jnb1"
     
     def decrypt(self, encrypted_data):
         """解密加密的数据"""
@@ -43,7 +43,13 @@ class D2TerrorZoneScraper:
                 result2.append(chr(ord(char) ^ ord(key_char)))
             result2_str = ''.join(result2)
             
-            return result2_str
+            # 第四步：Base64编码（与JavaScript的btoa对应）
+            encoded_result = base64.b64encode(result2_str.encode('utf-8')).decode('utf-8')
+            
+            # 第五步：再次Base64解码（与JavaScript的atob对应）
+            final_data = base64.b64decode(encoded_result).decode('utf-8', errors='ignore')
+            
+            return final_data
         except Exception as e:
             print(f"解密失败: {e}")
             return None
@@ -249,9 +255,9 @@ class D2TerrorZoneScraper:
         tooltip_elements = soup.find_all(class_="tooltip-text")
         for tooltip in tooltip_elements:
             text = tooltip.text.strip()
-            if "immunities:" in text:
+            if "immunities:" in text.lower():
                 # 提取免疫信息
-                immunity_text = text.split("immunities:")[1].strip()
+                immunity_text = text.split(":")[1].strip() if ":" in text else ""
                 # 分割免疫属性
                 immunity_list = immunity_text.split(",")
                 for imm in immunity_list:
@@ -285,6 +291,7 @@ class D2TerrorZoneScraper:
             "Crypt": "Act 1",
             "Blood Moor": "Act 1",
             "Den of Evil": "Act 1",
+            "Burial Grounds": "Act 1",
             
             # Act 2
             "Far Oasis": "Act 2",
@@ -325,9 +332,6 @@ class D2TerrorZoneScraper:
             
             # Act 5
             "Arreat Plateau": "Act 5",
-            "Bloody Foothills": "Act 5",
-            "Frigid Highlands": "Act 5",
-            "Abaddon": "Act 5",
             "Crystalline Passage": "Act 5",
             "Frozen River": "Act 5",
             "Glacial Trail": "Act 5",
