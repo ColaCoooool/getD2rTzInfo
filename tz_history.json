@@ -27,6 +27,180 @@
         "Physical"
       ],
       "time": "2026-03-29 12:00:00"
+    },
+    {
+      "timestamp": "2026-03-29T12:35:32.648228",
+      "name": "神秘的奶牛关",
+      "location": "Unknown",
+      "immunities": [
+        "Lightning"
+      ],
+      "time": "2026-03-29 12:30:00"
+    },
+    {
+      "timestamp": "2026-03-29T13:03:30.926697",
+      "name": "失落之城</br>群蛇峡谷</br>利爪蝮蛇神殿</br>古代水道",
+      "location": "Act 2",
+      "immunities": [
+        "Cold",
+        "Fire",
+        "Lightning",
+        "Magic",
+        "Poison"
+      ],
+      "time": "2026-03-29 13:00:00"
+    },
+    {
+      "timestamp": "2026-03-29T13:33:32.337651",
+      "name": "尼拉塞克的神殿</br>神殿大厅",
+      "location": "Act 5",
+      "immunities": [
+        "Cold",
+        "Fire",
+        "Lightning",
+        "Magic",
+        "Poison",
+        "Physical"
+      ],
+      "time": "2026-03-29 13:30:00"
+    },
+    {
+      "timestamp": "2026-03-29T14:03:33.894730",
+      "name": "鲁·高因下水道",
+      "location": "Act 2",
+      "immunities": [
+        "Cold",
+        "Fire",
+        "Lightning",
+        "Poison"
+      ],
+      "time": "2026-03-29 14:00:00"
+    },
+    {
+      "timestamp": "2026-03-29T14:33:38.462092",
+      "name": "世界之石要塞</br>毁灭王座</br>世界之石大殿",
+      "location": "Act 5",
+      "immunities": [
+        "Cold",
+        "Fire",
+        "Lightning",
+        "Magic",
+        "Poison",
+        "Physical"
+      ],
+      "time": "2026-03-29 14:30:00"
+    },
+    {
+      "timestamp": "2026-03-29T15:03:40.802072",
+      "name": "亚瑞特高原</br>阿克隆深渊",
+      "location": "Act 5",
+      "immunities": [
+        "Cold",
+        "Fire",
+        "Lightning",
+        "Magic",
+        "Poison",
+        "Physical"
+      ],
+      "time": "2026-03-29 15:00:00"
+    },
+    {
+      "timestamp": "2026-03-29T15:33:42.388974",
+      "name": "冰川小径</br>漂流洞窟",
+      "location": "Act 5",
+      "immunities": [
+        "Cold",
+        "Fire",
+        "Lightning",
+        "Poison",
+        "Physical"
+      ],
+      "time": "2026-03-29 15:30:00"
+    },
+    {
+      "timestamp": "2026-03-29T16:03:46.925053",
+      "name": "石块旷野</br>崔斯特姆",
+      "location": "Act 1",
+      "immunities": [
+        "Cold",
+        "Fire",
+        "Lightning",
+        "Poison"
+      ],
+      "time": "2026-03-29 16:00:00"
+    },
+    {
+      "timestamp": "2026-03-29T16:33:48.604576",
+      "name": "碎石荒野</br>碎石古墓",
+      "location": "Act 2",
+      "immunities": [
+        "Cold",
+        "Fire",
+        "Lightning",
+        "Poison"
+      ],
+      "time": "2026-03-29 16:30:00"
+    },
+    {
+      "timestamp": "2026-03-29T17:03:50.244081",
+      "name": "黑暗森林</br>地下通道",
+      "location": "Act 1",
+      "immunities": [
+        "Cold",
+        "Fire",
+        "Lightning",
+        "Poison"
+      ],
+      "time": "2026-03-29 17:00:00"
+    },
+    {
+      "timestamp": "2026-03-29T17:33:51.881937",
+      "name": "亚瑞特高原</br>阿克隆深渊",
+      "location": "Act 5",
+      "immunities": [
+        "Cold",
+        "Fire",
+        "Lightning",
+        "Magic",
+        "Poison",
+        "Physical"
+      ],
+      "time": "2026-03-29 17:30:00"
+    },
+    {
+      "timestamp": "2026-03-29T18:03:53.334409",
+      "name": "崔凡克",
+      "location": "Act 3",
+      "immunities": [
+        "Cold",
+        "Fire",
+        "Lightning",
+        "Poison"
+      ],
+      "time": "2026-03-29 18:00:00"
+    },
+    {
+      "timestamp": "2026-03-29T18:33:55.011671",
+      "name": "冰冷之原</br>洞穴",
+      "location": "Act 1",
+      "immunities": [
+        "Cold",
+        "Fire",
+        "Lightning"
+      ],
+      "time": "2026-03-29 18:30:00"
+    },
+    {
+      "timestamp": "2026-03-29T19:03:53.855198",
+      "name": "先祖之路</br>寒冰地窖",
+      "location": "Act 5",
+      "immunities": [
+        "Cold",
+        "Lightning",
+        "Poison",
+        "Physical"
+      ],
+      "time": "2026-03-29 19:00:00"
     }
   ]
 }
